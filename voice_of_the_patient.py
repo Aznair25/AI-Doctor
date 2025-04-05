@@ -34,8 +34,7 @@ def record_audio(file_path,timeout=20,pharase_time_limit=None):
 
     except Exception as e:
         logging.error(f"An error occured: {e}")
-audio_file_path="voice_of_the_patient.mp3"
-record_audio(file_path=audio_file_path)    
+   
 
 #step 2: Set up speech to text-SST-model for transcription
 import os 
@@ -43,12 +42,20 @@ from groq import Groq
 from dotenv import load_dotenv
 load_dotenv()
 GROQ_API_KEY=os.getenv("GROQ_API_KEY")
-client=Groq(api_key=GROQ_API_KEY)
 stt_model="whisper-large-v3"
-audio_file=open(audio_file_path,"rb")
-transcription=client.audio.transcriptions.create(
-    model=stt_model,
-    file=audio_file,
-    language="en"
-)
-print(transcription.text)
+
+def audio_to_text(GROQ_API_KEY,audio_file_path,stt_model):
+    client=Groq(api_key=GROQ_API_KEY)
+    
+    audio_file=open(audio_file_path,"rb")
+    transcription=client.audio.transcriptions.create(
+        model=stt_model,
+        file=audio_file,
+        language="en"
+    )
+    return transcription.text
+
+
+# if __name__=="__main__":
+#     audio_file_path="voice_of_the_patient.mp3"
+#     record_audio(file_path=audio_file_path) 
