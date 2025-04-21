@@ -3,11 +3,11 @@ import subprocess
 import platform
 import os
 from gtts import gTTS
-def text_to_speech_with_gtts(input_txet,output_file_path):
+def text_to_speech_with_gtts(input_text,output_file_path):
     language="en"
 
     audioobj=gTTS(
-        text=input_txet,
+        text=input_text,
         lang=language,
         slow=False
     )

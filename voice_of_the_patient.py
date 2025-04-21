@@ -23,7 +23,7 @@ def record_audio(file_path,timeout=20,pharase_time_limit=None):
             logging.info("Start speaking Now.....")
 
             #record audio
-            audio_data=recognizer.listen(source,timeout=timeout,phrase_time_limit=pharase_time_limit)
+            audio_data=recognizer.listen(source,timeout=timeout,pharase_time_limit=pharase_time_limit)
             logging.info("Recording Complete......")
             #convert the recorded audio to mp3 file
             wav_data=audio_data.get_wav_data()
