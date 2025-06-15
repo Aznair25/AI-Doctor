@@ -7,7 +7,6 @@ from brain_of_the_doctor import encoded_image, analyz_image_with_query
 from voice_of_the_patient import record_audio, audio_to_text
 from voice_of_the_doctor import text_to_speech_with_gtts, text_to_speech_with_elevenlabs
 
-# Configure logging
 def setup_logging():
     log_file = os.getenv("LOG_FILE", "ai_doctor.log")
     logging.basicConfig(
@@ -19,7 +18,6 @@ def setup_logging():
         ]
     )
 
-# System prompt remains constant for every query
 SYSTEM_PROMPT = (
     "You have to act as a professional doctor, I know you are not but this is for learning purpose. "
     "What’s in this image? Do you find anything wrong with it medically? "
@@ -30,7 +28,6 @@ SYSTEM_PROMPT = (
     "Keep your answer concise (max 2 sentences). No preamble, start your answer right away please"
 )
 
-# Initialize logging once at import time
 load_dotenv()
 setup_logging()
 
@@ -40,7 +37,6 @@ def process_inputs(audio_file_path: str, image_path: str):
     logging.debug(f"Audio file path: {audio_file_path}")
     logging.debug(f"Image file path: {image_path}")
 
-    # Convert audio to text
     try:
         speech_to_text_output = audio_to_text(
             GROQ_API_KEY=os.getenv("GROQ_API_KEY"),
@@ -52,9 +48,7 @@ def process_inputs(audio_file_path: str, image_path: str):
         logging.error(f"Error during speech-to-text: {e}")
         speech_to_text_output = ""
 
-    # Analyze image if provided
     if image_path:
-        # Build full prompt by concatenating system prompt and user speech
         full_prompt = SYSTEM_PROMPT + " " + speech_to_text_output
         logging.debug(f"Full LLM query: {full_prompt}")
 
@@ -72,7 +66,6 @@ def process_inputs(audio_file_path: str, image_path: str):
         doctor_response = "No image provided for me to analyze."
         logging.debug("No image path provided; skipping image analysis.")
 
-    # Convert doctor's text response to speech
     try:
         voice_of_doctor_path = "final.mp3"
         text_to_speech_with_gtts(
@@ -87,8 +80,6 @@ def process_inputs(audio_file_path: str, image_path: str):
     logging.debug("--- Request processing complete ---\n")
     return speech_to_text_output, doctor_response, voice_of_doctor_path
 
-
-# Create and launch Gradio interface
 def main():
     inface = gr.Interface(
         fn=process_inputs,
@@ -110,8 +101,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
