@@ -1,3 +1,4 @@
 .env
 .venv
 ai_doctor.log
+__pycache__
